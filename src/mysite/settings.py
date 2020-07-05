@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1','[::1]']
 
 # Application definition
-
+# Installed apps with standard, imported and own apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,12 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #django-crispy-forms über pip install
     'crispy_forms',
-
     #own apps
     'recommender',
     'study',
 ]
 
+# added for crispy_forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'recommender:home'
@@ -93,12 +93,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
+
+# Oracle datadabse settings
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': 'xe',
-        'USER': 'STEFFEN',
-        'PASSWORD': 'marl79boro',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '1521',
     }

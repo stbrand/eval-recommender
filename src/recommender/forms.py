@@ -199,6 +199,6 @@ class DatasetUserForm(forms.ModelForm):
                 dataset = self.data.get('dataset')
                 self.fields['user_id'].queryset = User.objects.filter(dataset=dataset).order_by('user_id')
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty User queryset
+                pass  # invalid input from the client; ignore and fallback to empty user queryset
         elif self.instance.pk:
             self.fields['user_id'].queryset = User.objects.none()

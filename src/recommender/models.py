@@ -97,10 +97,10 @@ class Rating(models.Model):
 
 
 class Reclist(models.Model):
-	user = models.ForeignKey('User', on_delete=models.CASCADE) # models.IntegerField() # FK
-	algorithm = models.ForeignKey('Algorithm', on_delete=models.CASCADE) # models.IntegerField() # FK
+	user = models.ForeignKey('User', on_delete=models.CASCADE)
+	algorithm = models.ForeignKey('Algorithm', on_delete=models.CASCADE)
 	length = models.PositiveSmallIntegerField()
-	items = models.ManyToManyField('Item', through='ReclistItem', related_name='reclists') # Menge FKs
+	items = models.ManyToManyField('Item', through='ReclistItem', related_name='reclists')
 
 	class Meta:
 		constraints = [
@@ -121,8 +121,8 @@ class ReclistItem(models.Model):
 
 class Evaluation(models.Model):
 	study = models.ForeignKey('Study', on_delete=models.CASCADE)
-	reclist = models.ForeignKey('Reclist', on_delete=models.CASCADE) # models.IntegerField() # FK
-	user = models.ForeignKey('User', on_delete=models.CASCADE) # models.IntegerField() # FK
+	reclist = models.ForeignKey('Reclist', on_delete=models.CASCADE)
+	user = models.ForeignKey('User', on_delete=models.CASCADE)
 	accuracy_mae = models.DecimalField(max_digits=10, decimal_places=2, null=True)
 	accuracy_mse = models.DecimalField(max_digits=10, decimal_places=2, null=True)
 	accuracy_rmse = models.DecimalField(max_digits=10, decimal_places=2, null=True)
@@ -146,7 +146,7 @@ class Study(models.Model):
 	dataset = models.ForeignKey('Dataset', on_delete=models.CASCADE)
 	description = models.TextField(blank=True, null=True)
 	active = models.BooleanField(default=False)
-	algorithms = models.ManyToManyField('Algorithm', related_name='studies') # Menge FKs
+	algorithms = models.ManyToManyField('Algorithm', related_name='studies')
 	reclist_length = models.PositiveSmallIntegerField()
 
 	def __str__(self):
