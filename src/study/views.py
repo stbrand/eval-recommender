@@ -157,6 +157,7 @@ def accuracy_rmse(evaluation):
 def home_view(request, *args, **kwargs):
 	# get active study
 	study = Study.objects.get(active=True)
+	# context, hand over to template
 	context = {
 		'study': study,
 	}
@@ -258,6 +259,7 @@ def start_view(request, *args, **kwargs):
 		request.session['items_list'] = items_list
 		request.session.modified = True
 
+		# context, hand items and list of items over to template
 		context = {
 			"items":items,
 			"items_list": request.session['items_list'],
@@ -286,11 +288,13 @@ def item_rating_view(request, id, **kwargs):
 			# hand over the updated list to the template, if the list is not empty
 			items_list = request.session['items_list']
 			if request.session['items_list']:
+				# hand items and list of items over to template
 				context={
 					"item":item,
 					"items_list":items_list,
 				}
 			else:
+				# hand items over to template
 				context={
 					"item":item,
 				}
@@ -331,6 +335,8 @@ def item_rating_view(request, id, **kwargs):
 				request.session.modified = True
 				# hand over the updated list to the template, if the list is not empty
 				items_list = request.session['items_list']
+
+				# hand items and list of items over to template
 				context={
 					"item":item,
 					"items_list":items_list
@@ -338,6 +344,7 @@ def item_rating_view(request, id, **kwargs):
 			else:
 				# all items are rated, list in session variable is empty
 				all_rated = True
+				# hand over to template
 				context={
 					"item":item,
 					"all_rated":all_rated,
@@ -415,6 +422,7 @@ def reclist_rating_view(request, id, **kwargs):
 			# hand over the updated list to the template, if the list is not empty
 			reclists_list = request.session['reclists_list']
 			if request.session['reclists_list']:
+				# context, hand reclists and form over to template
 				context={
 					"reclist":reclist,
 					"reclists_list":reclists_list,
@@ -484,6 +492,7 @@ def reclist_rating_view(request, id, **kwargs):
 				# hand over the updated list to the template, if the list is not empty
 				reclists_list = request.session['reclists_list']
 
+				# context, hand reclists and form over to template
 				context={
 					"reclist":reclist,
 					"reclists_list":reclists_list,

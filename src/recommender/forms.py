@@ -41,7 +41,7 @@ LENGTH_CHOICES = (
 
 
 class UserLoginForm(forms.Form):
-    token = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"Input your token here"}))
+    token = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Input your token here'}))
     class Meta:
         model = User
         fields = [
@@ -49,7 +49,7 @@ class UserLoginForm(forms.Form):
         ]
 
 class UserFilterForm(forms.ModelForm):
-    user_id = forms.ModelChoiceField(queryset=User.objects.all())
+    user_id = forms.ModelChoiceField(queryset=User.objects.all().order_by('id'))
     class Meta:
         model = User
         fields = [
@@ -89,11 +89,11 @@ class FilePathForm(forms.Form):
     path_for_rating_file = forms.FilePathField(path = os.path.expanduser('~/.surprise_data/'), recursive=True)
     line_format = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'e.g.: user item rating timestamp','size':50}), max_length=255)
     delimiter = forms.ChoiceField(choices=DELIMITER_CHOICES)
-    skip_lines = forms.ChoiceField(choices=SKIP_CHOICES,initial="0")
+    skip_lines = forms.ChoiceField(choices=SKIP_CHOICES,initial='0')
 
 
 class AlgorithmForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"Input name here"}))
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Input your name here'}))
     class Meta:
         model = Algorithm
         fields = [
@@ -102,7 +102,7 @@ class AlgorithmForm(forms.ModelForm):
         ]
 
 class AlgorithmFilterForm(forms.ModelForm):
-    algorithm = forms.ModelChoiceField(queryset=Algorithm.objects.all())
+    algorithm = forms.ModelChoiceField(queryset=Algorithm.objects.all().order_by('name'))
     class Meta:
         model = Algorithm
         fields = [
@@ -110,7 +110,7 @@ class AlgorithmFilterForm(forms.ModelForm):
         ]
 
 class AlgorithmMultiForm(forms.ModelForm):
-    algorithm = forms.ModelMultipleChoiceField(queryset=Algorithm.objects.all(), widget=forms.CheckboxSelectMultiple)
+    algorithm = forms.ModelMultipleChoiceField(queryset=Algorithm.objects.all().order_by('name'), widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = Algorithm
         fields = [
@@ -122,8 +122,8 @@ class LengthMultiForm(forms.Form):
 
 
 class StudyForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"Input name here"}))
-    algorithms = forms.ModelMultipleChoiceField(queryset=Algorithm.objects.all(), widget=forms.CheckboxSelectMultiple)
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Input name here'}))
+    algorithms = forms.ModelMultipleChoiceField(queryset=Algorithm.objects.all().order_by('id'), widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = Study
         fields = [
@@ -136,7 +136,7 @@ class StudyForm(forms.ModelForm):
         ]
 
 class StudyFilterForm(forms.ModelForm):
-    study = forms.ModelChoiceField(queryset=Study.objects.all())
+    study = forms.ModelChoiceField(queryset=Study.objects.all().order_by('id'))
     class Meta:
         model = Study
         fields = [
@@ -145,7 +145,7 @@ class StudyFilterForm(forms.ModelForm):
 
 
 class TokenForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"Input token here"}))
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Input token here'}))
     class Meta:
         model = Token
         fields = [
@@ -153,7 +153,7 @@ class TokenForm(forms.ModelForm):
         ]
 
 class GenreForm(forms.ModelForm):
-    title = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"Input title here"}))
+    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Input title here'}))
     class Meta:
         model = MovieGenre
         fields = [
@@ -162,7 +162,7 @@ class GenreForm(forms.ModelForm):
 
 
 class DatasetForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"Input name here"}))
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Input name here'}))
     class Meta:
         model = Dataset
         fields = [
@@ -174,7 +174,7 @@ class DatasetForm(forms.ModelForm):
 
 
 class DatasetFilterForm(forms.ModelForm):
-    dataset = forms.ModelChoiceField(queryset=Dataset.objects.all())
+    dataset = forms.ModelChoiceField(queryset=Dataset.objects.all().order_by('id'))
     class Meta:
         model = Dataset
         fields = [
@@ -182,8 +182,8 @@ class DatasetFilterForm(forms.ModelForm):
         ]
 
 class DatasetUserForm(forms.ModelForm):
-    dataset = forms.ModelChoiceField(queryset=Dataset.objects.all())
-    user_id = forms.ModelChoiceField(queryset=User.objects.all())
+    dataset = forms.ModelChoiceField(queryset=Dataset.objects.all().order_by('id'))
+    user_id = forms.ModelChoiceField(queryset=User.objects.all().order_by('id'))
     class Meta:
         model = User
         fields = [

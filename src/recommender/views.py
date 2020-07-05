@@ -51,7 +51,7 @@ def register(request, *args, **kwargs):
 # class based view
 class TokenListView(ListView):
 	template_name = "recommender/token_list.html"
-	queryset = Token.objects.all()
+	queryset = Token.objects.all().order_by("id")
 
 
 # not used, just for deleting tokens
@@ -125,7 +125,7 @@ def generate_tokens(request, *args, **kwargs):
 
 class AlgorithmListView(ListView):
 	template_name = "recommender/algorithm_list.html"
-	queryset = Algorithm.objects.all()
+	queryset = Algorithm.objects.all().order_by("name")
 
 
 class AlgorithmDetailView(DetailView):
@@ -179,7 +179,7 @@ class AlgorithmDeleteView(DeleteView):
 
 class GenreListView(ListView):
 	template_name = "recommender/genre_list.html"
-	queryset = MovieGenre.objects.all()
+	queryset = MovieGenre.objects.all().order_by("title")
 
 
 class GenreDetailView(DetailView):
@@ -233,7 +233,7 @@ class GenreDeleteView(DeleteView):
 
 class StudyListView(ListView):
 	template_name = "recommender/study_list.html"
-	queryset = Study.objects.all()
+	queryset = Study.objects.all().order_by("id")
 
 
 class StudyDetailView(DetailView):
@@ -284,6 +284,7 @@ class StudyDeleteView(DeleteView):
 def study_active_view(request, *args, **kwargs):
 	# instantiate empty form in template
 	form = StudyFilterForm()
+	# context, hand form over to template
 	context = {
 		'form': form,
 	}
@@ -297,6 +298,7 @@ def study_active_view(request, *args, **kwargs):
 			study.active = True
 			study.save()
 
+			# context, hand study and form over to template
 			context = {
 				'study': study,
 				'form': form,
@@ -314,7 +316,7 @@ def study_active_view(request, *args, **kwargs):
 
 class DatasetListView(ListView):
 	template_name = "recommender/dataset_list.html"
-	queryset = Dataset.objects.all()
+	queryset = Dataset.objects.all().order_by("id")
 
 
 class DatasetDetailView(DetailView):
@@ -369,7 +371,7 @@ class DatasetDeleteView(DeleteView):
 # show online users
 class UserListView(ListView):
 	template_name = "recommender/users_online_list.html"
-	queryset = User.objects.filter(online_user=True)
+	queryset = User.objects.filter(online_user=True).order_by("id")
 
 
 def users_view(request, *args, **kwargs):
@@ -378,6 +380,7 @@ def users_view(request, *args, **kwargs):
 	# get online users, actually no longer needed in current version
 	online_users = User.objects.filter(dataset=None)
 
+	# context, hand users and form over to template
 	context = {
 		'online_users': online_users,
 		'form': form,
@@ -391,9 +394,11 @@ def users_view(request, *args, **kwargs):
 			# get chosen dataset
 			dataset = form.cleaned_data['dataset']
 			# get users of chosen dataset
-			users = User.objects.filter(dataset=dataset)
+			users = User.objects.filter(dataset=dataset).order_by("id")
 			# get amount of users of chosen dataset and hand over to template
 			amount = User.objects.filter(dataset=dataset).count()
+
+			# context, hand over to template
 			context = {
 				'dataset': dataset,
 				'online_users': online_users,
@@ -442,6 +447,7 @@ def items_view(request, *args, **kwargs):
 	# instantiate empty form in template
 	form = DatasetFilterForm()
 
+	# context, hand form over to template
 	context = {
 		'form': form,
 	}
@@ -453,9 +459,10 @@ def items_view(request, *args, **kwargs):
 		if form.is_valid():
 			# get chosen dataset, items and amount of items in dataset
 			dataset = form.cleaned_data['dataset']
-			items = Item.objects.filter(dataset=dataset)
+			items = Item.objects.filter(dataset=dataset).order_by("id")
 			amount = Item.objects.filter(dataset=dataset).count()
-			# hand over to template
+
+			# hand over to template, items ordered
 			context = {
 				'dataset': dataset,
 				'items': items,
@@ -474,7 +481,7 @@ def items_view(request, *args, **kwargs):
 # class based view
 class EvaluationListView(ListView):
 	template_name = "recommender/evaluations_list.html"
-	queryset = Evaluation.objects.all()
+	queryset = Evaluation.objects.all().order_by("id")
 
 
 class EvaluationDetailView(DetailView):
@@ -489,6 +496,8 @@ class EvaluationDetailView(DetailView):
 def evaluations_table_view(request, *args, **kwargs):
 	# instantiate empty form in template
 	form = StudyFilterForm()
+
+	# context, hand form over to template
 	context = {
 		'form': form,
 	}
@@ -497,10 +506,11 @@ def evaluations_table_view(request, *args, **kwargs):
 		form = StudyFilterForm(request.POST)
 
 		if form.is_valid():
-			# get study and evaluations of study
+			# get study and evaluations of study (ordered by id)
 			study = form.cleaned_data['study']
-			evals = Evaluation.objects.filter(study=study)
+			evals = Evaluation.objects.filter(study=study).order_by("id")
 
+			# hand over to template
 			context = {
 				'study': study,
 				'evals': evals,
@@ -518,7 +528,7 @@ def evaluations_table_view(request, *args, **kwargs):
 # class based view
 class ReclistListView(ListView):
 	template_name = "recommender/reclist_list.html"
-	queryset = Reclist.objects.all()
+	queryset = Reclist.objects.all().order_by("id")
 
 
 class ReclistDetailView(DetailView):
@@ -541,6 +551,7 @@ def reclists_existing(request, *args, **kwargs):
 
 	# make list out of set and hand it over to template
 	my_list = list(my_set)
+	# hand list over to template
 	context = {
 		'my_list':my_list
 	}
@@ -612,10 +623,11 @@ def reclist_view(request, *args, **kwargs):
 				lengths = l_form.cleaned_data['length']
 
 			# get recommendation lists, filtered by users of chosen dataset, chosen algorithms and chosen lenghts
-			reclists = Reclist.objects.filter(user__in=User.objects.filter(dataset=request.session['dataset_id']), algorithm__in=Algorithm.objects.filter(id__in=request.session['algorithm']), length__in=lengths)
+			reclists = Reclist.objects.filter(user__in=User.objects.filter(dataset=request.session['dataset_id']), algorithm__in=Algorithm.objects.filter(id__in=request.session['algorithm']), length__in=lengths).order_by("id")
 			dataset = Dataset.objects.get(id=request.session['dataset_id'])
 			algos = Algorithm.objects.filter(id__in=request.session['algorithm'])
 
+			# hand over to template
 			context = {
 				'dataset': dataset,
 				'algos': algos,
@@ -638,7 +650,14 @@ def surprise_predict(request, *args, **kwargs):
 	d_form = DatasetFilterForm()
 	a_form = AlgorithmFilterForm()
 	f_form = FilePathForm()
-	context = {'d_form':d_form, 'a_form':a_form, 'f_form':f_form}
+
+	# context, hand forms over to template
+	context = {
+		'd_form':d_form,
+		'a_form':a_form,
+		'f_form':f_form
+	}
+
 	if request.method == "POST":
 		# get entries from forms in template
 		d_form = DatasetFilterForm(request.POST)
@@ -679,6 +698,7 @@ def ratings_view(request, *args, **kwargs):
 		d_form = DatasetFilterForm()
 		u_form = UserFilterForm(dataset=None)
 
+		# context, hand form over to template
 		context = {
 			'd_form': d_form,
 		}
@@ -705,7 +725,7 @@ def ratings_view(request, *args, **kwargs):
 			# get user_id from form in template
 			user = request.POST.get("user_id")
 			# get ratings by user id
-			ratings = Rating.objects.filter(user=user)
+			ratings = Rating.objects.filter(user=user).order_by("id")
 			# get user by user id
 			user_obj = User.objects.get(id=user)
 			rating_user = user_obj.user_id
@@ -714,6 +734,7 @@ def ratings_view(request, *args, **kwargs):
 			# get dataset from session variable
 			dataset = Dataset.objects.get(id=request.session['dataset_id'])
 
+			# hand over to template
 			context = {
 				'dataset': dataset,
 				'rating_user': rating_user,
@@ -730,7 +751,7 @@ def ratings_online_users(request, *args, **kwargs):
 	# get all online users
 	users = User.objects.filter(online_user=True)
 	# get all ratings of all online users
-	ratings = Rating.objects.filter(user__in=users)
+	ratings = Rating.objects.filter(user__in=users).order_by("id")
 
 	# empty lists
 	user_amount_list = []
