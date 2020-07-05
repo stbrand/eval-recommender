@@ -1,0 +1,11 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+	<ul>
+	{% for instance in object_list%}
+		<li>{{ instance.user }} - {{ instance.algorithm }} - {{ instance.length }} </li>
+	{% endfor %}
+	</ul>
+
+{% endblock %}

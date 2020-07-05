@@ -1,0 +1,23 @@
+{% extends 'recommender/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-6">
+      <form method="POST"> {% csrf_token %}
+        <table>
+            {{ formset|crispy }}
+        </table>
+
+        <br>
+
+        <a href="{{ view.get_success_url }}" class="btn btn-primary" role="button">Cancel</a>
+        <input type="submit" class="btn btn-success" name="" value="Save" />
+      </form>
+
+      <br><br>
+
+    </div>
+  </div>
+{% endblock %}

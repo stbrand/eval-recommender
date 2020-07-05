@@ -1,0 +1,21 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+<h2>MovieLens Uploads</h2>
+
+<br>
+
+<div class="middle container mt-5 mb-5">
+	<li><a href="{% url 'recommender:movie_upload' %}">Movie Uploads for datasets like Latest Small, Latest Full, 20M or 25M</a></li>
+	<li><a href="{% url 'recommender:rating_upload' %}">Rating Uploads for datasets like Latest Small, Latest Full, 20M or 25M</a></li>
+	<li><a href="{% url 'recommender:link_upload' %}">Link Uploads for datasets like Latest Small, Latest Full, 20M or 25M</a></li>
+	<br>
+	<li><a href="{% url 'recommender:movie_upload_100K' %}">Movie Uploads for datasets like 100K</a></li>
+	<li><a href="{% url 'recommender:rating_upload_100K' %}">Rating Uploads for datasets like 100K</a></li>
+	<br>
+	<li><a href="{% url 'recommender:movie_upload_1M_10M' %}">Movie Uploads for datasets like 1M or 10M</a></li>
+	<li><a href="{% url 'recommender:rating_upload_1M_10M' %}">Rating Uploads for datasets like 1M or 10M</a></li>
+</div>
+
+{% endblock %}

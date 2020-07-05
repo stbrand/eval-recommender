@@ -1,0 +1,44 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+<div class="col-md-12 mt-3 mb-3">
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col"></th>
+	      <th scope="col"></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+		<tr>
+	      <th scope="row">Name</th>
+	      <td>{{ object.name }}</td>
+	    </tr>
+	    <tr>
+	      <th scope="row">Size</th>
+	      <td>{{ object.size }}</td>
+	    </tr>
+			<tr>
+		     <th scope="row">Category</th>
+		     <td>{{ object.category }}</td>
+		  </tr>
+			<tr>
+	      <th scope="row">Description</th>
+	      <td>{{ object.description }}</td>
+	    </tr>
+	  </tbody>
+	</table>
+
+	<br>
+
+	<div class="col-10">
+		<div class="text-right">
+			<p>
+				<a href="{% url 'recommender:datasets_list' %}" class="btn btn-info" >Back to List</a>
+			</p>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+<h1>Algorithms</h1>
+
+<br>
+
+{% for instance in object_list %}
+	<div class="large row">
+		<div class="col-5">
+			<a href="{{ instance.get_absolute_url }}">{{ instance.name }}</a>
+		</div>
+		<div>
+			<a class="btn btn-info" href="{{ instance.get_absolute_url }}update" role="button">Update</a>
+			<a class="btn btn-warning" href="{{ instance.get_absolute_url }}delete" role="button">Delete</a>
+		</div>
+	</div>
+{% endfor %}
+
+{% endblock %}

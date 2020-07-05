@@ -1,0 +1,53 @@
+{% extends 'recommender/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+	<div class="row">
+		<div class="col-6">
+			<form method="POST"> {% csrf_token %}
+				<h1>Choose dataset</h1>
+
+				{{ form|crispy }}
+
+				<div class="text-right">
+					<a href="{{ view.get_success_url }}" class="btn btn-primary" role="button">Cancel</a>
+					<input type="submit" class="btn btn-info" value="Choose" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<br>
+
+	{% if items %}
+		<h2 class="text-info">The dataset {{ dataset }} has {{ amount }} items.</h2>
+
+		<br>
+
+		<div class="col-md-10 mt-5 mb-5">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col"></th>
+						<th scope="col">Name</th>
+						<th scope="col">ID</th>
+						<th scope="col">IMDb link</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in items %}
+						<tr>
+							<th scope="row">{{ forloop.counter }}</th>
+							<td>{{item.name}}</td>
+							<td>{{item.item_id}}</td>
+							<td>{{item.imdb_id}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	{% endif %}
+
+{% endblock %}

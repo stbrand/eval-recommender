@@ -1,0 +1,13 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+	<p>{{ object.user }} </p>
+	<p>{{ object.algorithm }} </p>
+	<p>{{ object.length }} </p>
+
+	<br>
+	
+	<p><a href="{% url 'recommender:reclists_list' %}" class="btn btn-primary" >Back to List</a></p>
+
+{% endblock %}

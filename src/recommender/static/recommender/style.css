@@ -1,0 +1,45 @@
+html {
+  height: 100%;
+}
+
+body{
+  font-family: 'Roboto', sans-serif;
+  height: 100%;
+}
+
+#container {
+  min-height: 100%;
+}
+
+h1 {
+  color: ;
+  font-family: 'Roboto', sans-serif;
+}
+
+.large {
+  font-size: 28px;
+}
+
+.middle {
+  font-size: 20px;
+}
+
+div a {
+    color: #1f9b8e;
+}
+
+#page-footer {
+  bottom: 0;
+  width: 100%;
+}
+
+img {
+    width: 150px;
+    height: auto;
+}
+
+
+.resize {
+    width: 20px;
+    height: auto;
+}

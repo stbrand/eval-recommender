@@ -1,0 +1,38 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+	<h1>Ratings of recommendation lists</h1>
+
+	<br>
+
+	{% for instance in object_list %}
+		<div class="row">
+			<div class="col-md-2">
+				<h2><a href="{{ instance.get_absolute_url }}">{{ instance.id }}</a></h2>
+			</div>
+
+			<div class="col-md-4 mt-3 mb-3">
+				<table class="table table-striped">
+			  	<thead>
+			    	<tr>
+			      	<th scope="col"></th>
+			      	<th scope="col"></th>
+			    	</tr>
+			  	</thead>
+			  	<tbody>
+						<tr>
+				      <th scope="row">Study</th>
+				      <td>{{ instance.study }}</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">User</th>
+				      <td>{{ instance.user }}</td>
+				    </tr>
+				  </tbody>
+				</table>
+			</div>
+		</div>
+	{% endfor %}
+
+{% endblock %}

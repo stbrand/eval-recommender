@@ -1,0 +1,77 @@
+{% extends 'recommender/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-6">
+		<form method="POST"> {% csrf_token %}
+			<h1>Choose study:</h1>
+
+			{{ form|crispy }}
+
+			<div class="text-right">
+				<a href="{% url 'recommender:evaluations_list' %}" class="btn btn-primary" role="button">Cancel</a>
+				<input type="submit" class="btn btn-info" value="Choose" />
+			</div>
+		</form>
+	</div>
+</div>
+
+{% if study %}
+	<br><br>
+	<h2>The evaluations for study {{ study }} are:</h2>
+	<br>
+{% endif %}
+
+{% if evals %}
+	<div class="row">
+		<div class="col-md mt-3 mb-3">
+			<table class="table table-striped table-bordered">
+			  <thead>
+			    <tr>
+			      <th scope="col"></th>
+						<th scope="col">ID</th>
+						<th scope="col">Online user</th>
+						<th scope="col">Algorithm</th>
+						<th scope="col">Utility</th>
+						<th scope="col">Serendipity</th>
+						<th scope="col">Novelty</th>
+						<th scope="col">Diversity</th>
+						<th scope="col">Unexpectedness</th>
+						<th scope="col">MAE</th>
+						<th scope="col">MSE</th>
+						<th scope="col">RMSE</th>
+						<th scope="col">Not Rated</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+					{% for object in evals %}
+						<tr>
+				      <th scope="row">{{ forloop.counter }}</th>
+							<td><a href="{{ object.get_absolute_url }}">{{ object.id }}</a></td>
+							<td>{{ object.user }}</td>
+							<td>{{ object.reclist.algorithm }}</td>
+							<td>{{ object.utility }}</td>
+							<td>{{ object.serendipity }}</td>
+							<td>{{ object.novelty }}</td>
+							<td>{{ object.diversity }}</td>
+							<td>{{ object.unexpectedness }}</td>
+							<td>{{ object.accuracy_mae }}</td>
+							<td>{{ object.accuracy_mse }}</td>
+							<td>{{ object.accuracy_rmse }}</td>
+							<td>{{ object.non_rating_rate }}</td>
+				    </tr>
+					{% endfor %}
+			  </tbody>
+			</table>
+
+			<div class="text-right">
+				<a href="{% url 'recommender:evaluations_list' %}" role="button" class="btn btn-info" >Back to List</a>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% endblock %}

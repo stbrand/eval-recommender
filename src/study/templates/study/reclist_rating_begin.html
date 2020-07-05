@@ -1,0 +1,33 @@
+{% extends 'study/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+	<h1>These are the determined recommendation lists:</h1>
+
+	<br><br>
+
+	{% for reclist in reclists %}
+		<div class="row">
+			<div class="col-md-8">
+				<h4><li>Recommendation list {{forloop.counter}}</li></h4>
+				<ol>
+				{% for ri in reclist.reclist_items.all %}
+					<li>{{ ri.item }}</li>
+				{% endfor %}
+				</ol>
+			</div>
+		</div>
+	{% endfor %}
+
+	<br>
+
+	<div class="row">
+		<div class="col-md-8">
+			<div class="text-right">
+				<a href="{% url 'study:reclist_rating_detail' reclists_list.0 %}" class="btn btn-info">Begin rating of recommendation lists</a>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

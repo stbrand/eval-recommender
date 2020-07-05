@@ -1,0 +1,19 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+	<h1>Existing reclists</h1>
+
+	<br>
+
+	<ul>
+	{% for item in my_list %}
+		<li>
+			<p>Dataset: {{item.0}}</p>
+			<p>Algorithm: {{item.1}}</p>
+			<p>Length: {{item.2}}</p>
+		</li>
+	{% endfor %}
+	</ul>
+
+{% endblock %}

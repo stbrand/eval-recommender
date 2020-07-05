@@ -1,0 +1,37 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+<h1>Tokens</h1>
+
+<br>
+
+<div class="large container">
+	<div class="row">
+		<div class="col-4">
+			<h2>Token</h2>
+		</div>
+		<div>
+			<h2>Valid?</h2>
+		</div>
+	</div>
+
+	{% for instance in object_list %}
+		<div class="row">
+			<div class="col-4">
+				{{ instance.name }}
+			</div>
+			<div class="col-2">
+				{% if instance.valid %}
+					<input type="checkbox" name="validation" value="{{ instance.valid }}" onclick="return false" checked>
+				{% else %}
+					<input type="checkbox" name="validation" value="{{ instance.valid }}" onclick="return false">
+				{% endif %}
+			</div>
+			<div class="col-4">
+				<a class="btn btn-warning" href="{{ instance.get_absolute_url }}delete" role="button">Delete</a>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+
+{% endblock %}

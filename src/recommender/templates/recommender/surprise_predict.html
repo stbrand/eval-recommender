@@ -1,0 +1,50 @@
+{% extends 'recommender/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if messages %}
+	{% for message in messages %}
+		<div>
+			<strong>{{message|safe}}</strong>
+		</div>
+	{% endfor %}
+{% endif %}
+
+<div class="row">
+	<div class="col-6">
+		<form method="POST"> {% csrf_token %}
+
+			{{ d_form|crispy }}
+			{{ a_form|crispy }}
+
+			<label for="number">Length of reclists</label>
+			<select name="number">
+				<option value="" selected="">------------</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</select>
+
+			<br><br>
+
+			{{ f_form|crispy }}
+
+			<br>
+
+			<div class="text-right">
+		  	<input type="submit" class="btn btn-info" value="Predict ratings" name="surprise_btn">
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

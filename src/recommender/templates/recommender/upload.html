@@ -1,0 +1,53 @@
+{% extends 'recommender/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+
+{% if messages %}
+	{% for message in messages %}
+		<div>
+			<strong>{{message|safe}}</strong>
+		</div>
+	{% endfor %}
+{% else %}
+	<form method="POST"> {% csrf_token %}
+		<h2 class="text-info">Choose dataset</h2>
+		<h5>{{ example }}</h5>
+		<br>
+		<div class="row">
+			<div class="col-6">
+
+				{{ form|crispy }}
+
+				<div class="text-right">
+					<a href="{{ view.get_success_url }}" class="btn btn-primary" role="button">Cancel</a>
+					<input type="submit" class="btn btn-info" value="Choose" name="dataset_btn" />
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<br><br>
+
+	{% if dataset %}
+		<h1>Chosen dataset is {{ dataset }}</h1>
+	{% endif %}
+
+	<br><br>
+
+	<strong>{{ order }}</strong>
+
+	<br><br>
+
+	<form action="" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+		<label for="file1"> Upload a file</label>
+		<input type="file" id="file1" name="file">
+		<small>Only accepts CSV files</small>
+		<button type="submit" class="btn btn-primary" name="upload">Upload</button>
+	</form>
+{% endif %}
+
+{% endblock %}

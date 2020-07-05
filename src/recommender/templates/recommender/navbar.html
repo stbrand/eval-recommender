@@ -1,0 +1,163 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand text-info" href="#">Recommender Module</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link text-info" href="{% url 'recommender:home' %}">Home</a>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Studies
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:studies_list' %}">Studies list</a>
+          <a class="dropdown-item" href="{% url 'recommender:study_active' %}">Choose active study</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'recommender:study_create' %}">New study</a>
+        </div>
+      </li>
+      {% endif %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Datasets
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:datasets_list' %}">Datasets list</a>
+          {% if user.is_authenticated %}
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'recommender:dataset_create' %}">Create dataset (name, algorithms, etc.)</a>
+          {% endif %}
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Algorithms
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:algorithms_list' %}">Algorithms list</a>
+          {% if user.is_authenticated %}
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'recommender:algo_create' %}">Add algorithm</a>
+          {% endif %}
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Users
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:users_list' %}">Users list</a>
+          <a class="dropdown-item" href="{% url 'recommender:online_users_list' %}">Online users</a>
+        </div>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          RecLists
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:surprise_predict' %}">Create recommendation lists with SurpriseLib</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'recommender:reclist_algo_length' %}">Existing recommendation lists</a>
+          <a class="dropdown-item" href="{% url 'recommender:reclists' %}">Search a recommendation list</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Evaluations
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:evaluations_table' %}">Evaluation tables for single studies</a>
+          <a class="dropdown-item" href="{% url 'recommender:evaluations_list' %}">Ratings of recommendation lists</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Ratings
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:ratings_online_users_list' %}">Ratings of online users</a>
+          <a class="dropdown-item" href="{% url 'recommender:ratings_list' %}">Search ratings of offline users</a>
+        </div>
+      </li>
+      {% endif %}
+      <li class="nav-item">
+        <a class="nav-link text-info" href="{% url 'recommender:items_list' %}">Items</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Genres
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:genres_list' %}">Genres list</a>
+          {% if user.is_authenticated %}
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'recommender:genre_create' %}">Add genre</a>
+          {% endif %}
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Tokens
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:tokens_list' %}">Tokens list</a>
+          {% if user.is_authenticated %}
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'recommender:generate_token' %}">Generate tokens</a>
+          {% endif %}
+        </div>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          MovieLens Dataset CSV Uploads
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:upload_central' %}">Uploads</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'recommender:movie_upload' %}">Movie Upload Latest 20M or 25M</a>
+          <a class="dropdown-item" href="{% url 'recommender:rating_upload' %}">Rating Upload Latest 20M or 25M</a>
+          <a class="dropdown-item" href="{% url 'recommender:link_upload' %}">Link Upload Latest 20M or 25M</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'recommender:movie_upload_100K' %}">Movie Upload 100K</a>
+          <a class="dropdown-item" href="{% url 'recommender:rating_upload_100K' %}">Rating Upload 100K</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'recommender:movie_upload_1M_10M' %}">Movie Upload 1M or 10M</a>
+          <a class="dropdown-item" href="{% url 'recommender:rating_upload_1M_10M' %}">Rating Upload 1M or 10M</a>
+        </div>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item ml-auto dropdown">
+        <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Register & Login
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'recommender:register' %}">Register</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'recommender:login' %}">Login</a>
+          <a class="dropdown-item" href="{% url 'recommender:logout' %}">Logout</a>
+        </div>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link text-info">|</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-info">Logged in as {{ request.user }}</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>

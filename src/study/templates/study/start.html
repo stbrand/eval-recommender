@@ -1,0 +1,21 @@
+{% extends 'study/base.html' %}
+
+{% block content %}
+
+	<div class="row">
+		<div class="col-md-8">
+			<h1>The determined items are:</h1>
+			<br>
+			<ul>
+				{% for item in items %}
+					<li>{{ item }} </li>
+				{% endfor %}
+			</ul>
+			<br>
+			<div class="text-center">
+				<a href="{% url 'study:rating_detail' items_list.0 %}" class="btn btn-info">Begin rating</a>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

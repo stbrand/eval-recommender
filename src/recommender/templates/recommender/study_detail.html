@@ -1,0 +1,50 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+<div class="col-md-8 mt-3 mb-3">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+    	<tr>
+        <th scope="row">Name</th>
+        <td>{{ object.name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Dataset</th>
+        <td>{{ object.dataset }}</td>
+      </tr>
+    	<tr>
+        <th scope="row">Active</th>
+        <td>{{ object.active }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Algorithms</th>
+        <td>
+  				<ul>
+  					{% for algo in object.algorithms.all %}
+  					     <li>{{ algo }}</li>
+  					{% endfor %}
+  				</ul>
+  			</td>
+      </tr>
+  	   <tr>
+        <th scope="row">Description</th>
+        <td>{{ object.description }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+	<br>
+
+	<div class="text-right">
+	   <p><a href="{% url 'recommender:studies_list' %}" class="btn btn-info" >Back to List</a></p>
+	</div>
+</div>
+
+{% endblock %}

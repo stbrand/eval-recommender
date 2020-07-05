@@ -1,0 +1,89 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+	<div class="row">
+		<div class="col-8">
+
+			{% if d_form %}
+				<form method="POST"> {% csrf_token %}
+					<h1>Step 1: Choose dataset</h1>
+
+					{{ d_form|crispy }}
+
+					<a href="{{ view.get_success_url }}" class="btn btn-primary" role="button">Cancel</a>
+					<input type="submit" class="btn btn-info" value="Choose" name="dataset_btn" />
+				</form>
+			{% endif %}
+
+			{% if dataset %}
+				<h1>Chosen dataset is: </h1>
+				<h2>{{ dataset }}</h2>
+			{% endif %}
+
+			<br>
+
+			{% if a_form %}
+				<form method="POST"> {% csrf_token %}
+					<h1>Step 2: Choose algorithm(s)</h1>
+
+						{{ a_form|crispy }}
+
+					<a href="{{ view.get_success_url }}" class="btn btn-primary" role="button">Cancel</a>
+					<input type="submit" class="btn btn-info" value="Choose" name="algo_btn" />
+				</form>
+			{% endif %}
+
+			{% if algos %}
+				<h1>Chosen algorithms are: </h1>
+				<ul>
+				  {% for algo in algos %}
+				  	<li><h2>{{ algo }}</h2></li>
+				  {% endfor %}
+				</ul>
+			{% endif %}
+
+			<br>
+
+			{% if l_form %}
+				<form method="POST"> {% csrf_token %}
+					<h1>Step 3: Choose length(s) of recommendation lists</h1>
+
+						{{ l_form|crispy }}
+
+					<a href="{{ view.get_success_url }}" class="btn btn-primary" role="button">Cancel</a>
+					<input type="submit" class="btn btn-info" value="Choose" name="length_btn" />
+				</form>
+			{% endif %}
+
+			<br>
+
+			{% if lengths %}
+				<h1>Chosen lengths are: </h1>
+				<ul>
+				  {% for length in lengths %}
+				  	<li><h2>{{ length }} </h2></li>
+				  {% endfor %}
+				</ul>
+			{% endif %}
+
+			<ul>
+				{% for instance in reclists %}
+				  <li>The reclist for user {{ instance.user }}, predicted with algorithm {{ instance.algorithm }} is:</li>
+				    <ol>
+							{% for movie in instance.reclist_items.all %}
+				       <li>
+								 {{ movie.item }} :
+				        Prediction: {{ movie.prediction }}
+								</li>
+
+				       {% endfor %}
+				    </ol>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+{% endblock %}

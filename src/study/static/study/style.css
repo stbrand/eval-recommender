@@ -1,0 +1,50 @@
+.html {
+  height: 100%;
+}
+
+body{
+  /*font-family: 'Crimson Pro', serif;
+  color:red;*/
+  font-family: 'Roboto', sans-serif;
+}
+
+#container {
+  height: 100%;
+}
+
+h1 {
+  color: ;
+  font-family: 'Roboto', sans-serif;
+  /*font-family: 'Literata';*/
+}
+
+.large {
+  font-size: 28px;
+}
+
+.inner {
+  width: 50%;
+  margin: 0 auto;
+}
+
+div a {
+    color: #1f9b8e;
+}
+
+#page-footer {
+  bottom: 0;
+  width: 100%;
+  color: white;
+}
+
+/*
+img {
+    width: 150px;
+    height: auto;
+}
+*/
+
+.resize_big {
+    width: 150px;
+    height: auto;
+}

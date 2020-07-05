@@ -1,0 +1,24 @@
+{% extends 'recommender/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-8">
+    <form method="POST" id="datasetForm"> {% csrf_token %}
+      <h1>How many users for which dataset would you like to generate?</h1>
+      
+      <br>
+
+      {{ form|crispy }}
+
+      <div class="text-right">
+        <a href="{{ view.get_success_url }}" class="btn btn-primary" role="button">Cancel</a>
+        <input type="submit" class="btn btn-info" value="Generate" />
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

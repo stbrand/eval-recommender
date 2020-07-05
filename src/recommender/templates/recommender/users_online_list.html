@@ -1,0 +1,19 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-8">
+		<h1>Online users</h1>
+
+		<br>
+
+		<ul>
+			{% for instance in object_list %}
+				<li>User ID: {{instance.id}} 	Token: {{instance.token}} </li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+{% endblock %}

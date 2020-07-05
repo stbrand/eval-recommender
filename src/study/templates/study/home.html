@@ -1,0 +1,11 @@
+{% extends 'Study/base.html' %}
+
+{% block content %}
+
+  <h1>Welcome to the study {{ study.name }} for evaluation of recommender systems!</h1>
+
+  <br><br>
+
+  <a href="{% url 'study:login' %}">Please login with your valid token</a>
+
+{% endblock %}

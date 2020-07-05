@@ -1,0 +1,12 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+	<p>{{ object.id }} </p>
+	<p>{{ object.title }} </p>
+
+	<br>
+	
+	<p><a href="{% url 'recommender:genres_list' %}" class="btn btn-primary" >Back to List</a></p>
+
+{% endblock %}

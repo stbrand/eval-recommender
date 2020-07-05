@@ -1,0 +1,97 @@
+{% extends 'study/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+	{%if not all_rated %}
+		<div class="font-italic"><h3>Please rate the given recommendation lists on a scale of 1 to 5</h3></div>
+
+		<div class="row">
+			<div class="col-md-6 mt-5">
+				<ol>
+					{% for ri in reclist.reclist_items.all %}
+						<li>
+								<p>{{ ri.item }}</p>
+							{% if ri.item.poster %}
+							<div class="col-md-5">
+								<div class="d-flex justify-content-around">
+									<p><img style="width: 80px; height: auto" src="{{ ri.item.poster.url }}" alt="img"></p>
+								</div>
+							</div>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ol>
+			</div>
+			<div class="co-md-6 mt-5">
+				{%if reclists_list %}
+					<form method="POST" action="{% url 'study:reclist_rating_detail' reclists_list.0 %}" name="{{ reclist.id }}"> {% csrf_token %}
+				{% else%}
+					<form method="POST" action="{% url 'study:reclist_rating_detail' reclist.id %}"> {% csrf_token %}
+				{% endif %}
+
+						<p class="font-weight-bold">How much did you enjoy the recommendations?</p>
+						{% for radio in form.utility %}
+							<div class="form-check form-check-inline">
+    						{{ radio }}
+							</div>
+						{% endfor %}
+
+						<p class="font-weight-bold">How much and pleasantly were you surprised?</p>
+						{% for radio in form.serendipity %}
+							<div class="form-check form-check-inline">
+    						{{ radio }}
+							</div>
+						{% endfor %}
+
+						<p class="font-weight-bold">How novel were the recommendations for you?</p>
+						{% for radio in form.novelty %}
+							<div class="form-check form-check-inline">
+    						{{ radio }}
+							</div>
+						{% endfor %}
+
+						<p class="font-weight-bold">How would you rate the variety of items in the recommendation list?</p>
+						{% for radio in form.diversity %}
+							<div class="form-check form-check-inline">
+    						{{ radio }}
+							</div>
+						{% endfor %}
+
+						<p class="font-weight-bold">How unexpected were the recommendations?</p>
+						{% for radio in form.unexpectedness %}
+							<div class="form-check form-check-inline">
+    						{{ radio }}
+							</div>
+						{% endfor %}
+
+						<br><br>
+
+						<select name="reclist" required="" id="id_reclist" hidden="True">
+				  	<option value="{{ reclist.id }}" selected="{{ reclist.id }}"></option>
+						<div class="text-right">
+							<input type="submit" class="btn btn-info" name="{{ reclist.id }}" value="Save" />
+						</div>
+					</form>
+			</div>
+		</div>
+
+	{% else %}
+
+	<br><br>
+
+	<div class="row">
+		<div class="col-md-5">
+			<h1>Thank you for rating!</h1>
+
+			<br><br>
+			
+			<div class="text-right">
+				<a href="{% url 'study:stop' %}" class="btn btn-info">Finish rating</a>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+
+{% endblock %}

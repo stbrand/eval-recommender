@@ -1,0 +1,23 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+	<div class="large container">
+		<h1>Genres</h1>
+
+		<br>
+
+		{% for instance in object_list %}
+			<div class="row">
+				<div class="col-5">
+					{{ instance.title }}
+				</div>
+				<div>
+					<a class="btn btn-info" href="{{ instance.get_absolute_url }}update" role="button">Update</a>
+					<a class="btn btn-warning" href="{{ instance.get_absolute_url }}delete" role="button">Delete</a>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+
+{% endblock %}

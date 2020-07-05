@@ -1,0 +1,22 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+<div class="large container">
+  <div class="row">
+    <div class="col-8">
+      <form action="." method="POST"> {% csrf_token %}
+        <h1>Do you really want to delete the token "{{ object.name }}"?</h1>
+        
+        <br>
+
+        <div class="text-right">
+          <a href="{% url 'recommender:tokens_list' %}" class="btn btn-primary">Cancel</a>
+          <input type="submit" name="delete" class="btn btn-info" value="Yes" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

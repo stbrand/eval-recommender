@@ -1,0 +1,61 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+	<ul>
+		{% for user in users %}
+			{% if user in users_with_ratings %}
+
+				<h3><li class="text-info">User: {{ user }}</li></h3>
+				<ul>
+					{% for us in user_study_list %}
+						{% if user == us.0 and us.1 != 0 %}
+							<h5><li>Study: {{us.1}}</li></h5>
+						{% endif %}
+					{% endfor %}
+
+					{% for uu in user_user_list %}
+						{% if user == uu.0 and uu.1 != 0 %}
+							<h5><li>Mapped user: {{uu.1}}</li></h5>
+						{% endif %}
+					{% endfor %}
+
+					{% for ua in user_amount_list %}
+						{% if user == ua.0 and ua.1 != 0 %}
+							<h5><li>Amount of ratings: {{ua.1}}</li></h5>
+						{% endif %}
+					{% endfor %}
+
+					<li><h5>Ratings</h5></li>
+
+					<div class="row">
+						<div class="col-8 mt-3 mb-3">
+							<table class="table table-striped">
+							  <thead>
+							    <tr>
+							      <th scope="col"></th>
+							      <th scope="col">Item</th>
+										<th scope="col">Rating</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+									{% for rating in ratings %}
+										{% if user == rating.user and rating.rating %}
+											{% comment %} {{ forloop.counter }} {% endcomment %}
+											<tr>
+									      <th scope="row"></th>
+									      <td>{{ rating.item }}</td>
+												<td>{{ rating.rating }}</td>
+							    		</tr>
+										{% endif %}
+									{% endfor %}
+							  </tbody>
+							</table>
+						</div>
+					</div>
+				</ul>
+			{% endif %}
+		{% endfor %}
+	</ul>
+
+{% endblock %}

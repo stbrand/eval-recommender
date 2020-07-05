@@ -1,0 +1,53 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md mt-3 mb-3">
+		<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      <th scope="col"></th>
+					<th scope="col">ID</th>
+		      <th scope="col">Study</th>
+					<th scope="col">Online user</th>
+					<th scope="col">Utility</th>
+					<th scope="col">Serendipity</th>
+					<th scope="col">Novelty</th>
+					<th scope="col">Diversity</th>
+					<th scope="col">Unexpectedness</th>
+					<th scope="col">MAE</th>
+					<th scope="col">MSE</th>
+					<th scope="col">RMSE</th>
+					<th scope="col">Not Rated</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+			<tr>
+		      <th scope="row"></th>
+					<td>{{ object.id }}</td>
+		      <td>{{ object.study }}</td>
+					<td>{{ object.user }}</td>
+					<td>{{ object.utility }}</td>
+					<td>{{ object.serendipity }}</td>
+					<td>{{ object.novelty }}</td>
+					<td>{{ object.diversity }}</td>
+					<td>{{ object.unexpectedness }}</td>
+					<td>{{ object.accuracy_mae }}</td>
+					<td>{{ object.accuracy_mse }}</td>
+					<td>{{ object.accuracy_rmse }}</td>
+					<td>{{ object.non_rating_rate }}</td>
+		    </tr>
+		  </tbody>
+		</table>
+
+		<div class="text-right">
+			<p>
+				<a href="{% url 'recommender:evaluations_table' %}" class="btn btn-info" >Back to Table</a>
+				<a href="{% url 'recommender:evaluations_list' %}" class="btn btn-info" >Back to List</a>
+			</p>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

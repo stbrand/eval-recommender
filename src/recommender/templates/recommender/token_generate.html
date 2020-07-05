@@ -1,0 +1,14 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+<h1>How many tokens would you like to generate?</h1>
+
+<br>
+
+<form method="get">
+  <input type="text" name="how_many" />
+  <input type="submit" class="btn btn-info" value="Generate tokens" name="token_btn">
+</form>
+
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'study/base.html' %}
+
+{% block content %}
+
+	{%if not all_rated %}
+		<div class="row">
+			<div class="col-md-8">
+				<div class="font-italic"><h3>Please rate the following item on a scale of 1 to 10</h3></div>
+				<br>
+
+				<h2>{{ item }}</h2>
+				<div class="col-md-5 mt-5">
+					<div class="d-flex justify-content-around">
+						{% if item.poster %}
+							<img class="resize_big" src="{{ item.poster.url }}" alt="img">
+							{% endif %}
+						</div>
+				</div>
+
+				<br><br>
+
+				{%if items_list %}
+					<form method="POST" action="{% url 'study:rating_detail' items_list.0 %}"> {% csrf_token %}
+				{% else%}
+					<form method="POST" action="{% url 'study:rating_detail' item.id %}"> {% csrf_token %}
+				{% endif %}
+
+				<br>
+
+				<div class="row">
+					<div class="col-10">
+						<div class="form-check form-check-inline">
+  						<input class="form-check-input" required="true" type="radio" name="rating" id="0.5" value="0.5">
+  						<label class="form-check-label" for="0.5">1</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" required="true" type="radio" name="rating" id="1" value="1">
+  						<label class="form-check-label" for="1">2</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" required="true" type="radio" name="rating" id="1.5" value="1.5">
+  						<label class="form-check-label" for="1.5">3</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" required="true" type="radio" name="rating" id="2" value="2">
+  						<label class="form-check-label" for="2">4</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" required="true" type="radio" name="rating" id="2.5" value="2.5">
+  						<label class="form-check-label" for="2.5">5</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" required="true" type="radio" name="rating" id="3" value="3">
+  						<label class="form-check-label" for="3">6</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" required="true" type="radio" name="rating" id="3.5" value="3.5">
+  						<label class="form-check-label" for="3.5">7</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" required="true" type="radio" name="rating" id="4" value="4">
+  						<label class="form-check-label" for="4">8</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" required="true" type="radio" name="rating" id="4.5" value="4.5">
+  						<label class="form-check-label" for="4.5">9</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" required="true" type="radio" name="rating" id="5" value="5">
+  						<label class="form-check-label" for="5">10</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" required="true" type="radio" name="rating" id="None" value="">
+  						<label class="form-check-label" for="None">Don't know</label>
+						</div>
+					</div>
+				</div>
+				<select name="user" required="" id="id_user" hidden="True">
+		  		<option value="{{request.user }}" selected="{{request.user }}"></option>
+				</select>
+				<select name="item" required="" id="id_item" hidden="True">
+		  		<option value="{{ item.id }}" selected="{{ item.id }}"></option>
+				</select>
+
+				<div class="text-right">
+					<input type="submit" class="btn btn-info" value="Save" />
+				</div>
+			</div>
+		</div>
+	</form>
+
+	{% else %}
+
+	<br><br>
+
+	<div class="row">
+		<div class="col-md-5">
+			<h1>Thank you for rating!</h1>
+
+			<br><br>
+			
+			<div class="text-right">
+				<a href="{% url 'study:reclist_rating' %}" class="btn btn-info">Next to the recommendation lists</a>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'recommender/base.html' %}
+
+{% block content %}
+
+<h1>Studies</h1>
+
+<br>
+
+{% for instance in object_list %}
+	<div class="row">
+		<div class="col-md-3 mt-2 mb-2">
+			<div>
+				<h2><a href="{{ instance.get_absolute_url }}">{{ instance.name }}</a></h2>
+			</div>
+			<div>
+				{% if instance.active %}
+					<input type="checkbox" name="validation" value="{{ instance.active }}" onclick="return false" checked>
+				{% else %}
+					<input type="checkbox" name="validation" value="{{ instance.active }}" onclick="return false">
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="col-md-6 mt-3 mb-3">
+			<table class="table table-sm">
+				<thead>
+				  <tr>
+				    <th scope="col"></th>
+				    <th scope="col"></th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+				    <th scope="row">Dataset</th>
+				    <td>{{ instance.dataset }}</td>
+				  </tr>
+				  <tr>
+				    <th scope="row">Length of reclists</th>
+				    <td>{{ instance.reclist_length }}</td>
+				  </tr>
+				  <tr>
+				    <th scope="row">Algorithms</th>
+				    <td>
+							<ul>
+								{% for algo in instance.algorithms.all %}
+									<li>{{ algo }}</li>
+								{% endfor %}
+							</ul>
+						</td>
+				  </tr>
+					<tr>
+				    <th scope="row">Description</th>
+				    <td>{{ instance.description }}</td>
+				  </tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div>
+			<div class="text-right">
+				<a class="btn btn-info" href="{{ instance.get_absolute_url }}update" role="button">Update</a>
+				<a class="btn btn-warning" href="{{ instance.get_absolute_url }}delete" role="button">Delete</a>
+			</div>
+		</div>
+	</div>
+{% endfor %}
+
+{% endblock %}

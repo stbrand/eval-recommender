@@ -1,0 +1,60 @@
+{% extends 'recommender/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-6">
+		{% if d_form %}
+			<form method="POST"> {% csrf_token %}
+				<h1>Step 1: Choose dataset</h1>
+
+				{{ d_form|crispy }}
+
+				<div class="text-right">
+					<a href="{{ view.get_success_url }}" class="btn btn-primary" role="button">Cancel</a>
+					<input type="submit" class="btn btn-info" value="Choose" name="dataset_btn" />
+				</div>
+			</form>
+		{% endif %}
+
+		{% if dataset %}
+			<h1>Chosen dataset is: </h1>
+			<h2>{{ dataset }}</h2>
+		{% endif %}
+
+		<br>
+
+		{% if u_form %}
+			<form method="POST"> {% csrf_token %}
+				<h1>Step 2: Choose user</h1>
+
+					{{ u_form|crispy }}
+
+				<div class="text-right">
+					<a href="{{ view.get_success_url }}" class="btn btn-primary" role="button">Cancel</a>
+					<input type="submit" class="btn btn-info" value="Choose" name="user_btn" />
+				</div>
+			</form>
+		{% endif %}
+	</div>
+</div>
+
+{% if rating_user %}
+	<h1>Chosen user is: </h1>
+	<h2>{{ rating_user }}</h2>
+{% endif %}
+
+<br>
+
+{% if ratings %}
+	<p>The user {{ rating_user}} has {{ amount }} ratings.</p>
+{% endif %}
+	<ol>
+	{% for rating in ratings %}
+		<li>Item: {{rating.item}} -	Rating: {{rating.rating}}</li>
+	{% endfor %}
+	</ol>
+
+{% endblock %}

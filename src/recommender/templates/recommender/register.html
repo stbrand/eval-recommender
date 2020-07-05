@@ -1,0 +1,25 @@
+{% extends 'recommender/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="content-section">
+  <div class="row">
+    <div class="col-6">
+      <form method="POST"> {% csrf_token %}
+        <fieldset>
+          <legend class="border-bottom mb-4">Register now</legend>
+
+            {{ form|crispy }}
+
+        </fieldset>
+        <div class="text-right">
+          <button class="btn btn-outline-info" type="submit" name="button">Sign Up</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
