@@ -35,6 +35,15 @@ class Dataset(models.Model):
 		return reverse("recommender:dataset_detail", kwargs={"id": self.id})
 
 
+class Crossvalidation(models.Model):
+	algorithm = models.ForeignKey('Algorithm', on_delete=models.CASCADE)
+	dataset = models.ForeignKey('Dataset', on_delete=models.CASCADE)
+	rmse = models.DecimalField(max_digits=12, decimal_places=10, null=True)
+	mae = models.DecimalField(max_digits=12, decimal_places=10, null=True)
+	fit_time = models.DecimalField(max_digits=20, decimal_places=4, null=True)
+	test_time = models.DecimalField(max_digits=20, decimal_places=4, null=True)
+
+
 class Token(models.Model):
 	name = models.CharField(max_length=40, blank=False, null=False, unique=True)
 	valid = models.BooleanField(default=True)

@@ -86,10 +86,10 @@ class ItemCreateForm(forms.ModelForm):
         ]
 
 class FilePathForm(forms.Form):
-    path_for_rating_file = forms.FilePathField(path = os.path.expanduser('~/.surprise_data/'), recursive=True)
-    line_format = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'e.g.: user item rating timestamp','size':50}), max_length=255)
-    delimiter = forms.ChoiceField(choices=DELIMITER_CHOICES)
-    skip_lines = forms.ChoiceField(choices=SKIP_CHOICES,initial='0')
+    path_for_rating_file = forms.FilePathField(label='Path of dataset file with ratings', path = os.path.expanduser('~/.surprise_data/'), recursive=True)
+    line_format = forms.CharField(label='Order of entries in each line', widget=forms.TextInput(attrs={'placeholder':'e.g.: user item rating timestamp','size':50}), max_length=255)
+    delimiter = forms.ChoiceField(label='Delimiter between entries', choices=DELIMITER_CHOICES)
+    skip_lines = forms.ChoiceField(label='Skip lines, where are e.g. headers', choices=SKIP_CHOICES,initial='0')
 
 
 class AlgorithmForm(forms.ModelForm):

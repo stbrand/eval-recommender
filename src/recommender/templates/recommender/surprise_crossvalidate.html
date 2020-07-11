@@ -1,0 +1,40 @@
+{% extends 'recommender/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>5-fold cross-validation:</h1>
+<h3>compute the MAE and RMSE of algorithms for various datasets</h3>
+
+<br><br>
+
+{% if messages %}
+	{% for message in messages %}
+		<div>
+			<strong>{{message|safe}}</strong>
+		</div>
+	{% endfor %}
+{% endif %}
+
+<div class="row">
+	<div class="col-6">
+		<form method="POST"> {% csrf_token %}
+
+			{{ d_form|crispy }}
+			{{ a_form|crispy }}
+
+			<br>
+
+			{{ f_form|crispy }}
+
+			<br>
+
+			<div class="text-right">
+		  	<input type="submit" class="btn btn-info" value="Cross-validate" name="surprise_btn">
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

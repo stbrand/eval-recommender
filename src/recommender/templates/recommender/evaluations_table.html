@@ -40,10 +40,11 @@
 						<th scope="col">Novelty</th>
 						<th scope="col">Diversity</th>
 						<th scope="col">Unexpectedness</th>
-						<th scope="col">MAE</th>
-						<th scope="col">MSE</th>
-						<th scope="col">RMSE</th>
+						<th scope="col">User RMSE</th>
+						<th scope="col">User MAE</th>
 						<th scope="col">Not Rated</th>
+						<th scope="col">Algo RMSE</th>
+						<th scope="col">Algo MAE</th>
 			    </tr>
 			  </thead>
 			  <tbody>
@@ -58,10 +59,15 @@
 							<td>{{ object.novelty }}</td>
 							<td>{{ object.diversity }}</td>
 							<td>{{ object.unexpectedness }}</td>
-							<td>{{ object.accuracy_mae }}</td>
-							<td>{{ object.accuracy_mse }}</td>
 							<td>{{ object.accuracy_rmse }}</td>
+							<td>{{ object.accuracy_mae }}</td>
 							<td>{{ object.non_rating_rate }}</td>
+							{% for cv in crossvalidations %}
+							{% if object.reclist.algorithm == cv.algorithm %}
+							<td>{{ cv.rmse }}</td>
+							<td>{{ cv.mae }}</td>
+							{% endif %}
+							{% endfor %}
 				    </tr>
 					{% endfor %}
 			  </tbody>

@@ -16,6 +16,7 @@ import os, csv, io, secrets
 
 from collections import defaultdict
 from surprise import Reader, Dataset as SurDataset
+from surprise.model_selection import cross_validate
 from surprise import SVD, SVDpp, SlopeOne, NMF, NormalPredictor
 from surprise import KNNBaseline, KNNBasic, KNNWithMeans
 from surprise import BaselineOnly, CoClustering
@@ -509,11 +510,13 @@ def evaluations_table_view(request, *args, **kwargs):
 			# get study and evaluations of study (ordered by id)
 			study = form.cleaned_data['study']
 			evals = Evaluation.objects.filter(study=study).order_by("id")
+			crossvalidations = Crossvalidation.objects.filter(dataset=study.dataset)
 
 			# hand over to template
 			context = {
 				'study': study,
 				'evals': evals,
+				'crossvalidations': crossvalidations,
 				'form': form,
 			}
 			return render(request, "recommender/evaluations_table.html", context)
@@ -639,9 +642,118 @@ def reclist_view(request, *args, **kwargs):
 	return render(request, "recommender/reclistitems.html", context)
 
 
+#####################
+# CROSSVALIDATION VIEWS
+#####################
+
+def crossvalidations_table_view(request, *args, **kwargs):
+	# instantiate empty form in template
+	form = DatasetFilterForm()
+
+	# context, hand form over to template
+	context = {
+		'form': form,
+	}
+	if request.method == "POST":
+		# get entries from form in template
+		form = DatasetFilterForm(request.POST)
+
+		if form.is_valid():
+			# get dataset and crossvalidations of dataset (ordered by rmse)
+			dataset = form.cleaned_data['dataset']
+			crossvalidations = Crossvalidation.objects.filter(dataset=dataset).order_by("rmse")
+
+			# hand over to template
+			context = {
+				'dataset': dataset,
+				'crossvalidations': crossvalidations,
+				'form': form,
+			}
+			return render(request, "recommender/crossvalidations_table.html", context)
+
+	return render(request, "recommender/crossvalidations_table.html", context)
+
+
 ##########################################
 # SURPRISE / CREATE RECOMMENDATION LISTS
 ##########################################
+
+# Surprise 5-fold Cross-Validation
+@login_required
+def surprise_crossvalidate(request, *args, **kwargs):
+	# instantiate empty forms in template
+	d_form = DatasetFilterForm()
+	a_form = AlgorithmFilterForm()
+	f_form = FilePathForm()
+
+	# context, hand forms over to template
+	context = {
+		'd_form':d_form,
+		'a_form':a_form,
+		'f_form':f_form
+	}
+
+	if request.method == "POST":
+		# get entries from forms in template
+		d_form = DatasetFilterForm(request.POST)
+		a_form = AlgorithmFilterForm(request.POST)
+		f_form = FilePathForm(request.POST)
+		if d_form.is_valid():
+			dataset = d_form.cleaned_data['dataset']
+		if a_form.is_valid():
+			algorithm = a_form.cleaned_data['algorithm']
+		if f_form.is_valid():
+			path = f_form.cleaned_data['path_for_rating_file']
+			line_format = f_form.cleaned_data['line_format']
+			delimiter = f_form.cleaned_data['delimiter']
+			skip_lines = f_form.cleaned_data['skip_lines']
+
+
+		# returns dict with keys 'test_rmse', 'test_mae', 'fit_time', 'test_time'
+		dict = surprise_cv(dataset, algorithm, path, line_format, delimiter, int(skip_lines))
+
+		# create cross-validations in database, if they do not exist already
+		try:
+			cv = Crossvalidation.objects.get(algorithm=algorithm,dataset=dataset)
+		except(Crossvalidation.DoesNotExist):
+			cv = Crossvalidation.objects.create(algorithm=algorithm,dataset=dataset)
+
+		# compute and save means of metrics at cv-object
+		for key, value in dict.items():
+			if key == 'test_rmse':
+				sum = 0
+				for rmse in value:
+					sum = sum + rmse
+				rmse_mean = sum/len(value)
+				cv.rmse = rmse_mean
+			if key == 'test_mae':
+				sum = 0
+				for mae in value:
+					sum = sum + mae
+				mae_mean = sum/len(value)
+				cv.mae = mae_mean
+			if key == 'fit_time':
+				sum = 0
+				for time in value:
+					sum = sum + time
+				fit_time = sum/len(value)
+				cv.fit_time = fit_time
+			if key == 'test_time':
+				sum = 0
+				for time in value:
+					sum = sum + time
+				test_time = sum/len(value)
+				cv.test_time = test_time
+			cv.save()
+
+		# instantiate empty forms in template
+		d_form = DatasetFilterForm()
+		a_form = AlgorithmFilterForm()
+		f_form = FilePathForm()
+		return render(request, "recommender/surprise_crossvalidate.html", context)
+
+	return render(request, "recommender/surprise_crossvalidate.html", context)
+
 
 # Create Reclists / Make Predictions
 @login_required
@@ -1507,7 +1619,7 @@ def amount_ratings(dataset_id):
 
 
 ################################################
-# SURPRISE PREDICT FUNCTIONS
+# SURPRISE PREDICT & CV FUNCTIONS
 ################################################
 # in variation taken from and inspired by the python surprise library (see surprise.readthedocs.io)
 
@@ -1607,3 +1719,50 @@ def predict_ratings(dataset, algorithm, number, file_path, format, delimiter, sk
 				except(ReclistItem.DoesNotExist):
 					ReclistItem.objects.create(reclist=rl,item=Item.objects.get(dataset=Dataset.objects.get(id=dataset.id), item_id=iid),prediction=prd,number=i)
 				i = i+1
+
+
+def surprise_cv(dataset, algorithm, file_path, format, delimiter, skip_lines):
+	if (dataset.name == 'MovieLens 100K' or dataset.name == '100K'):
+		# (SurDataset = surprise dataset) #ml-100k' is built-in
+		data = SurDataset.load_builtin('ml-100k')
+
+	# As we're loading a custom dataset, we need to define a reader. In the
+	# movielens-100k dataset, each line has the following format:
+	# 'user item rating timestamp', separated by '\t' characters.
+	else:
+		reader = Reader(line_format = format, sep = delimiter, skip_lines = skip_lines)
+		data = SurDataset.load_from_file(file_path, reader=reader)
+
+	# hardcoded algorithms from database -> call the the corresponding functions in surprise
+	if (algorithm.name == 'SVD'):
+		surprise_algo = SVD()
+
+	elif (algorithm.name == 'SVD++'):
+		surprise_algo = SVDpp()
+
+	elif (algorithm.name == 'NMF'):
+		surprise_algo = NMF()
+
+	elif (algorithm.name == 'Slope One'):
+		surprise_algo = SlopeOne()
+
+	elif (algorithm.name == 'k-NN'):
+		surprise_algo = KNNBasic()
+
+	elif (algorithm.name == 'Centered k-NN'):
+		surprise_algo = KNNWithMeans()
+
+	elif (algorithm.name == 'k-NN Baseline'):
+		surprise_algo = KNNBaseline()
+
+	elif (algorithm.name == 'Co-Clustering'):
+		surprise_algo = CoClustering()
+
+	elif (algorithm.name == 'Baseline'):
+		surprise_algo = BaselineOnly()
+
+	elif (algorithm.name == 'Random'):
+		surprise_algo = NormalPredictor()
+
+	# returns dict with keys 'test_rmse', 'test_mae', 'fit_time', 'test_time'
+	return cross_validate(surprise_algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
