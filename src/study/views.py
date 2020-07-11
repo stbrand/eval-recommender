@@ -67,23 +67,14 @@ class Mapping(Most_rated_neighbours):
 	purpose: mapping the online user randomly to an offline user, included in the dataset
 	"""
 	def random(self):
-		# am Ende rausnehmen (if und else):
-		if self.dataset.id == 81:
-			random_user_id = 53
-			print(random_user_id)
-			while random_user_id in (53,55,85,87,92,127,138,147,158,163,175,194,207,245,250,281,289,315,320,333,358,360,388,397,406,431,442,478,481,499,502,506,508,518,538,545,576,578):
-				random_user_id = random.randrange(610)
-				print(random_user_id)
-			self.mapped_user = User.objects.get(dataset=self.dataset, user_id=random_user_id)
 
-		else:
-			# count users of current dataset
-			sum_user = User.objects.filter(dataset=self.dataset).count()
-			if (sum_user) > 0:
-				random_user_id = random.randrange(sum_user)
-				# get and return a random user
-				self.mapped_user = User.objects.get(dataset=self.dataset, user_id=random_user_id)
-		return self.mapped_user
+		# count users of current dataset
+		sum_user = User.objects.filter(dataset=self.dataset).count()
+		if (sum_user) > 0:
+			random_user_id = random.randrange(sum_user)
+			# get and return a random user
+			self.mapped_user = User.objects.get(dataset=self.dataset, user_id=random_user_id)
+	return self.mapped_user
 
 
 
