@@ -19,15 +19,65 @@
 	</div>
 </div>
 
-{% if study %}
-	<br><br>
-	<h2>The evaluations for study {{ study }} are:</h2>
-	<br>
-{% endif %}
+
 
 {% if evals %}
+
+	{% if study %}
+		<br><br>
+		<h2>All average evaluation metrics for study {{ study }} are:</h2>
+		<br>
+	{% endif %}
+
 	<div class="row">
 		<div class="col-md mt-3 mb-3">
+
+			<table class="table table-striped table-bordered">
+			  <thead>
+			    <tr>
+			      <th scope="col"></th>
+						<th scope="col">Algorithm</th>
+						<th scope="col">RMSE</th>
+						<th scope="col">MAE</th>
+						<th scope="col">Utility</th>
+						<th scope="col">Serendipity</th>
+						<th scope="col">Novelty</th>
+						<th scope="col">Diversity</th>
+						<th scope="col">Unexpectedness</th>
+						<th scope="col">Not Rated</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+					{% for object in crossvalidations %}
+						<tr>
+							{% if object.algorithm in study.algorithms.all %}
+							<th scope="row"></th>
+							<td>{{ object.algorithm }}</td>
+							<td>{{ object.rmse|floatformat:3 }}</td>
+							<td>{{ object.mae|floatformat:3 }}</td>
+							{% for avg in averages %}
+							{% if object.algorithm.id == avg.reclist__algorithm %}
+							<td>{{ avg.utility__avg|floatformat:3 }}</td>
+							<td>{{ avg.serendipity__avg|floatformat:3 }}</td>
+							<td>{{ avg.novelty__avg|floatformat:3 }}</td>
+							<td>{{ avg.diversity__avg|floatformat:3 }}</td>
+							<td>{{ avg.unexpectedness__avg|floatformat:3 }}</td>
+							<td>{{ avg.non_rating_rate__avg|floatformat:3 }}</td>
+							{% endif %}
+							{% endfor %}
+							{% endif %}
+				    </tr>
+					{% endfor %}
+			  </tbody>
+			</table>
+
+
+			{% if study %}
+				<br><br>
+				<h2>The individual evaluations for study {{ study }} are:</h2>
+				<br>
+			{% endif %}
+
 			<table class="table table-striped table-bordered">
 			  <thead>
 			    <tr>
@@ -43,8 +93,6 @@
 						<th scope="col">User RMSE</th>
 						<th scope="col">User MAE</th>
 						<th scope="col">Not Rated</th>
-						<th scope="col">Algo RMSE</th>
-						<th scope="col">Algo MAE</th>
 			    </tr>
 			  </thead>
 			  <tbody>
@@ -62,16 +110,11 @@
 							<td>{{ object.accuracy_rmse }}</td>
 							<td>{{ object.accuracy_mae }}</td>
 							<td>{{ object.non_rating_rate }}</td>
-							{% for cv in crossvalidations %}
-							{% if object.reclist.algorithm == cv.algorithm %}
-							<td>{{ cv.rmse }}</td>
-							<td>{{ cv.mae }}</td>
-							{% endif %}
-							{% endfor %}
 				    </tr>
 					{% endfor %}
 			  </tbody>
 			</table>
+
 
 			<div class="text-right">
 				<a href="{% url 'recommender:evaluations_list' %}" role="button" class="btn btn-info" >Back to List</a>

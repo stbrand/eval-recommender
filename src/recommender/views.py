@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User as DjUser
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.db.models import Avg
 from .models import *
 from .forms import *
 from django.forms import formset_factory
@@ -512,11 +513,17 @@ def evaluations_table_view(request, *args, **kwargs):
 			evals = Evaluation.objects.filter(study=study).order_by("id")
 			crossvalidations = Crossvalidation.objects.filter(dataset=study.dataset)
 
+			# average values of accuracy metrics for algorithms of study
+			averages = Evaluation.objects.filter(study=study).values('reclist__algorithm'). \
+			annotate(Avg('utility'),Avg('serendipity'),Avg('novelty'),Avg('diversity'),Avg('unexpectedness'),Avg('non_rating_rate'))
+
+
 			# hand over to template
 			context = {
 				'study': study,
 				'evals': evals,
 				'crossvalidations': crossvalidations,
+				'averages': averages,
 				'form': form,
 			}
 			return render(request, "recommender/evaluations_table.html", context)
